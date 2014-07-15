@@ -1,0 +1,8 @@
+#!/bin/sh
+
+URL='http://www.accuweather.com/en/us/wilsonville-or/97070/weather-forecast/2187604?day=1'
+wget -q -O- "$URL" | awk -F\' '/acm_RecentLocationsCarousel\.push/{print $2": "$16", "$12"°" }'| head -1
+
+
+weather(){ curl -s "http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=${@:-97070}"|perl -ne '/<title>([^<]+)/&&printf "%s: ",$1;/<fcttext>([^<]+)/&&print $1,"\n"';}
+weather Wilsonville
